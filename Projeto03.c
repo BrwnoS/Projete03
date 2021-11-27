@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 struct endereco {
-  char estado[30], cidade[30], rua[30], cep[30];
+  char estado[30], cidade[30], bairro[30], cep[30];
 };
 
 struct cadastro{
@@ -33,11 +33,8 @@ char* validarSexo(char*sexoValido);
 _Bool vacinaValidado(_Bool vacina);
 double alturaValidada(double altura);
 
-
-
-
 int main(void) {
-  int opcao;
+  int opcao, qtdBackup=0;
   struct no *novo, *edicao, *exclusao, *lista=NULL, *backup=NULL;
 
   do {
@@ -72,13 +69,20 @@ int main(void) {
           backup = backup->prox;
         }
         fazerBackup_e_Restaurar(lista, &backup, novo);
+        qtdBackup++;
       break;
       case 7:
-        while(lista != NULL){
-          free(lista);
-          lista = lista->prox;
+        if (qtdBackup > 0) {
+          while(lista != NULL){
+            free(lista);
+            lista = lista->prox;
+          }
+          fazerBackup_e_Restaurar(backup, &lista, novo);
         }
-        fazerBackup_e_Restaurar(backup, &lista, novo);
+        else{
+          printf("Nao ha backup! \n\n");
+          system("pause"); system("cls");
+        }
       break;
     }
   } while(opcao != 8);
@@ -126,9 +130,9 @@ void incluir(struct no **lista, struct no *novo){
   printf("Digite a cidade:\n");
   fflush(stdin);
   gets(novo->cad.end.cidade);
-  printf("Digite a rua:\n");
+  printf("Digite a bairro:\n");
   fflush(stdin);
-  gets(novo->cad.end.rua);
+  gets(novo->cad.end.bairro);
   printf("Digite o cep:\n");
   fflush(stdin);
   gets(novo->cad.end.cep);
@@ -137,7 +141,7 @@ void incluir(struct no **lista, struct no *novo){
 
   novo->prox = *lista;
   *lista = novo;
-  system("pause");
+  system("pause"); system ("cls");
 }
 
 void imprimir (struct no *imprimir){
@@ -149,7 +153,7 @@ void imprimir (struct no *imprimir){
     printf("         Sexo: %s\n", aux->cad.sexo);
     printf("         Estado: %s\n",aux->cad.end.estado);
     printf("         Cidade: %s\n",aux->cad.end.cidade);
-    printf("         Rua: %s\n",aux->cad.end.rua);
+    printf("         Bairro: %s\n",aux->cad.end.bairro);
     printf("         CEP: %s\n",aux->cad.end.cep);
     printf("         Altura: %.2f\n",aux->cad.altura);
     printf("         Vacinado: ");
@@ -181,7 +185,7 @@ void buscarID (struct no *imprimir){
       printf("         Sexo: %s\n", aux->cad.sexo);
       printf("         Estado: %s\n",aux->cad.end.estado);
       printf("         Cidade: %s\n",aux->cad.end.cidade);
-      printf("         Rua: %s\n",aux->cad.end.rua);
+      printf("         Bairro: %s\n",aux->cad.end.bairro);
       printf("         CEP: %s\n",aux->cad.end.cep);
       printf("         Altura: %.2f\n",aux->cad.altura);
       printf("         Vacinado: ");
@@ -223,7 +227,7 @@ struct no *editar2(struct no *edicao){
     printf("  Sexo: %s\n", edicao->cad.sexo);
     printf("  Estado: %s\n",edicao->cad.end.estado);
     printf("  Cidade: %s\n",edicao->cad.end.cidade);
-    printf("  Rua: %s\n",edicao->cad.end.rua);
+    printf("  Bairro: %s\n",edicao->cad.end.bairro);
     printf("  CEP: %s\n",edicao->cad.end.cep);
     printf("  Altura: %.2f\n",edicao->cad.altura);
     printf("  Vacinado: ");
@@ -244,7 +248,7 @@ struct no *editar2(struct no *edicao){
     printf("|     3-Sexo         |\n");
     printf("|     4-Estado       |\n");
     printf("|     5-Cidade       |\n");
-    printf("|     6-Rua          |\n");
+    printf("|     6-Bairro       |\n");
     printf("|     7-CEP          |\n");
     printf("|     8-Altura       |\n");
     printf("|     9-vacina       |\n");
@@ -275,9 +279,9 @@ struct no *editar2(struct no *edicao){
         gets(edicao->cad.end.cidade);
       break;
       case 6:
-        printf("Digite a rua:\n");
+        printf("Digite o bairro:\n");
         fflush(stdin);
-        gets(edicao->cad.end.rua);
+        gets(edicao->cad.end.bairro);
       break;
       case 7:
         printf("Digite o cep:\n");
@@ -302,9 +306,9 @@ struct no *editar2(struct no *edicao){
         printf("Digite a cidade:\n");
         fflush(stdin);
         gets(edicao->cad.end.cidade);
-        printf("Digite a rua:\n");
+        printf("Digite a bairro:\n");
         fflush(stdin);
-        gets(edicao->cad.end.rua);
+        gets(edicao->cad.end.bairro);
         printf("Digite o cep:\n");
         fflush(stdin);
         gets(edicao->cad.end.cep);
@@ -341,16 +345,9 @@ void fazerBackup_e_Restaurar (struct no *lista, struct no **backup, struct no *n
     novo->prox = *backup;
     *backup = novo;
 
-    printf("novo         Usuario: %i\n", novo->cad.id);
-    printf("         Nome: %s\n",novo->cad.nome);
-    printf("         Email: %s\n", novo->cad.email);
-    printf("         Sexo: %s\n", novo->cad.sexo);
-    printf("\n--------------------------------------------\n");
-
     aux = aux->prox;
   }
-  system("pause");
-  system("cls");
+  system("pause"); system("cls");
 }
 
 char* validarSexo(char*sexoValido){
@@ -370,21 +367,22 @@ char* validarSexo(char*sexoValido){
 }
 
 char* validarEmail(char*emailValido){
-  char repetir;
-  int tamanhoEmail, i;
+  int tamanhoEmail, i, encontrou;
   do {
       printf("Digite o email:\n");
       gets(emailValido);
+      encontrou = 0;
       tamanhoEmail=strlen(emailValido);
       for (i = 0; i < tamanhoEmail; i++) {
         switch (emailValido[i]) {
           case '@':
-          repetir='N';
+            encontrou++;
+          break;
         }
       }
-      if (repetir!='N')
+      if (encontrou != 1)
         printf("Email deve conter @!!\n");
-  } while(repetir!='N');
+  } while(encontrou != 1);
   return emailValido;
 }
 
