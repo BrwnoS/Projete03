@@ -90,7 +90,6 @@ int main(void) {
   return 0;
 }
 
-
 void Menu(){
   printf(" ______________________________________\n");
   printf("|________|CADASTRO DE USUARIOS|________|\n");
@@ -322,18 +321,20 @@ struct no *editar2(struct no *edicao){
   } while(sair==1);
 }
 
-void excluir(struct no **lista, struct no *vitima){
-  struct no *p = *lista;
-  if (*lista==vitima){
-    *lista= vitima->prox;
+void excluir(struct no **lista, struct no *excluir){
+  struct no *aux = *lista;
+  if (*lista==excluir){
+    *lista= excluir->prox;
   }
   else{
-    while(p->prox !=vitima){
-    p = p->prox;
+    while(aux->prox !=excluir){
+    aux = aux->prox;
   }
-    p->prox = vitima->prox;
+    aux->prox = excluir->prox;
   }
-  free(vitima);
+  free(excluir);
+  system("pause");
+  system("cls");
 }
 
 void fazerBackup_e_Restaurar (struct no *lista, struct no **backup, struct no *novo){
