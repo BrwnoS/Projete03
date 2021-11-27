@@ -65,8 +65,9 @@ int main(void) {
       break;
       case 6:
         while(backup != NULL){
-          free(backup);
+          exclusao=backup;
           backup = backup->prox;
+          free(exclusao);
         }
         fazerBackup_e_Restaurar(lista, &backup, novo);
         qtdBackup++;
@@ -74,8 +75,9 @@ int main(void) {
       case 7:
         if (qtdBackup > 0) {
           while(lista != NULL){
-            free(lista);
+            exclusao=lista;
             lista = lista->prox;
+            free(exclusao);
           }
           fazerBackup_e_Restaurar(backup, &lista, novo);
         }
@@ -198,9 +200,12 @@ void buscarID (struct no *imprimir){
      }
       printf("\n--------------------------------------------\n");
     }
+    else{
+      printf("ID nao encontrado! \n");
+    }
     aux = aux->prox;
   }
-  system("puase"); system("cls");
+  system("pause"); system("cls");
 }
 
 struct no *editar(struct no *lista){
