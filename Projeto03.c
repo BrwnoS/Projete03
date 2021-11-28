@@ -210,13 +210,13 @@ void buscarID (struct no *imprimir){
 
 struct no *editar(struct no *lista){
   int id;
-  struct no *p = lista;
+  struct no *aux = lista;
   printf("Digite o ID: ");
   scanf("%i", &id);
-  while (p != NULL) {
-    if(p->cad.id == id)
-      return p;
-    p = p->prox;
+  while (aux != NULL) {
+    if(aux->cad.id == id)
+      return aux;
+    aux = aux->prox;
   }
   printf("ID invalido! \n\n"); system("pause"); system("cls");
   return NULL;
