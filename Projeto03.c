@@ -1,3 +1,5 @@
+//Victor Hugo Dias Gomes
+//Wesley Bruno Silva das Virgens
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
